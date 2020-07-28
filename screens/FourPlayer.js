@@ -69,60 +69,23 @@ export default function FourPlayer() {
     })
   }
 
-  function onPressMinusDamageOpponentOne(mPlayer) {
-    if (mPlayer.damageOpponentOne > 0) {
+  function onPressMinusDamageOpponent(mPlayer, sOpponent) {
+    if (mPlayer[sOpponent] > 0) {
       eval(mPlayer.event)({
         ...mPlayer,
         lifeTotal: mPlayer.lifeTotal + 1,
-        damageOpponentOne: mPlayer.damageOpponentOne - 1
+        [sOpponent]: mPlayer[sOpponent] - 1
       })
     }
   }
 
-  function onPressPlusDamageOpponentOne(mPlayer) {
-    eval(mPlayer.event)({
-      ...mPlayer,
-      lifeTotal: mPlayer.lifeTotal - 1,
-      damageOpponentOne: mPlayer.damageOpponentOne + 1
-    })
-  }
-
-  function onPressMinusDamageOpponentTwo(mPlayer) {
-    if (mPlayer.damageOpponentTwo > 0) {
+  function onPressPlusDamageOpponent(mPlayer, sOpponent) {
       eval(mPlayer.event)({
         ...mPlayer,
-        lifeTotal: mPlayer.lifeTotal + 1,
-        damageOpponentTwo: mPlayer.damageOpponentTwo - 1
+        lifeTotal: mPlayer.lifeTotal - 1,
+        [sOpponent]: mPlayer[sOpponent] + 1
       })
-    }
   }
-
-  function onPressPlusDamageOpponentTwo(mPlayer) {
-    eval(mPlayer.event)({
-      ...mPlayer,
-      lifeTotal: mPlayer.lifeTotal - 1,
-      damageOpponentTwo: mPlayer.damageOpponentTwo + 1
-    })
-  }
-
-  function onPressMinusDamageOpponentThree(mPlayer) {
-    if (mPlayer.damageOpponentThree > 0) {
-      eval(mPlayer.event)({
-        ...mPlayer,
-        lifeTotal: mPlayer.lifeTotal + 1,
-        damageOpponentThree: mPlayer.damageOpponentThree - 1
-      })
-    }
-  }
-
-  function onPressPlusDamageOpponentThree(mPlayer) {
-    eval(mPlayer.event)({
-      ...mPlayer,
-      lifeTotal: mPlayer.lifeTotal - 1,
-      damageOpponentThree: mPlayer.damageOpponentThree + 1
-    })
-  }
-
 
   return (
     <View
@@ -138,18 +101,15 @@ export default function FourPlayer() {
               transform: [{ rotate: "90deg" }]
             }}>
             <CommanderDamage
+              player={playerOne}
               colorOpponentOne={playerTwo.backgroundColor}
               damageOpponentOne={playerOne.damageOpponentOne}
-              onPressMinusDamageOpponentOne={() => onPressMinusDamageOpponentOne(playerOne)}
-              onPressPlusDamageOpponentOne={() => onPressPlusDamageOpponentOne(playerOne)}
               colorOpponentTwo={playerFour.backgroundColor}
               damageOpponentTwo={playerOne.damageOpponentTwo}
-              onPressMinusDamageOpponentTwo={() => onPressMinusDamageOpponentTwo(playerOne)}
-              onPressPlusDamageOpponentTwo={() => onPressPlusDamageOpponentTwo(playerOne)}
               colorOpponentThree={playerThree.backgroundColor}
               damageOpponentThree={playerOne.damageOpponentThree}
-              onPressMinusDamageOpponentThree={() => onPressMinusDamageOpponentThree(playerOne)}
-              onPressPlusDamageOpponentThree={() => onPressPlusDamageOpponentThree(playerOne)}
+              onPressMinusDamageOpponent={(player, opponent) => onPressMinusDamageOpponent(player, opponent)}
+              onPressPlusDamageOpponent={(player, opponent) => onPressPlusDamageOpponent(player, opponent)}
             />
           </View>
         </View>
@@ -189,18 +149,15 @@ export default function FourPlayer() {
               transform: [{ rotate: "-90deg" }]
             }}>
             <CommanderDamage
+              player={playerTwo}
               colorOpponentOne={playerFour.backgroundColor}
               damageOpponentOne={playerTwo.damageOpponentOne}
-              onPressMinusDamageOpponentOne={() => onPressMinusDamageOpponentOne(playerTwo)}
-              onPressPlusDamageOpponentOne={() => onPressPlusDamageOpponentOne(playerTwo)}
               colorOpponentTwo={playerThree.backgroundColor}
               damageOpponentTwo={playerTwo.damageOpponentTwo}
-              onPressMinusDamageOpponentTwo={() => onPressMinusDamageOpponentTwo(playerTwo)}
-              onPressPlusDamageOpponentTwo={() => onPressPlusDamageOpponentTwo(playerTwo)}
               colorOpponentThree={playerOne.backgroundColor}
               damageOpponentThree={playerTwo.damageOpponentThree}
-              onPressMinusDamageOpponentThree={() => onPressMinusDamageOpponentThree(playerTwo)}
-              onPressPlusDamageOpponentThree={() => onPressPlusDamageOpponentThree(playerTwo)}
+              onPressMinusDamageOpponent={(player, opponent) => onPressMinusDamageOpponent(player, opponent)}
+              onPressPlusDamageOpponent={(player, opponent) => onPressPlusDamageOpponent(player, opponent)}
             />
           </View>
         </View>
@@ -216,18 +173,15 @@ export default function FourPlayer() {
               transform: [{ rotate: "90deg" }]
             }}>
             <CommanderDamage
+              player={playerThree}
               colorOpponentOne={playerOne.backgroundColor}
               damageOpponentOne={playerThree.damageOpponentOne}
-              onPressMinusDamageOpponentOne={() => onPressMinusDamageOpponentOne(playerThree)}
-              onPressPlusDamageOpponentOne={() => onPressPlusDamageOpponentOne(playerThree)}
               colorOpponentTwo={playerTwo.backgroundColor}
               damageOpponentTwo={playerThree.damageOpponentTwo}
-              onPressMinusDamageOpponentTwo={() => onPressMinusDamageOpponentTwo(playerThree)}
-              onPressPlusDamageOpponentTwo={() => onPressPlusDamageOpponentTwo(playerThree)}
               colorOpponentThree={playerFour.backgroundColor}
               damageOpponentThree={playerThree.damageOpponentThree}
-              onPressMinusDamageOpponentThree={() => onPressMinusDamageOpponentThree(playerThree)}
-              onPressPlusDamageOpponentThree={() => onPressPlusDamageOpponentThree(playerThree)}
+              onPressMinusDamageOpponent={(player, opponent) => onPressMinusDamageOpponent(player, opponent)}
+              onPressPlusDamageOpponent={(player, opponent) => onPressPlusDamageOpponent(player, opponent)}
             />
           </View>
         </View>
@@ -267,18 +221,15 @@ export default function FourPlayer() {
               transform: [{ rotate: "-90deg" }]
             }}>
             <CommanderDamage
+              player={playerFour}
               colorOpponentOne={playerThree.backgroundColor}
               damageOpponentOne={playerFour.damageOpponentOne}
-              onPressMinusDamageOpponentOne={() => onPressMinusDamageOpponentOne(playerFour)}
-              onPressPlusDamageOpponentOne={() => onPressPlusDamageOpponentOne(playerFour)}
               colorOpponentTwo={playerOne.backgroundColor}
               damageOpponentTwo={playerFour.damageOpponentTwo}
-              onPressMinusDamageOpponentTwo={() => onPressMinusDamageOpponentTwo(playerFour)}
-              onPressPlusDamageOpponentTwo={() => onPressPlusDamageOpponentTwo(playerFour)}
               colorOpponentThree={playerTwo.backgroundColor}
               damageOpponentThree={playerFour.damageOpponentThree}
-              onPressMinusDamageOpponentThree={() => onPressMinusDamageOpponentThree(playerFour)}
-              onPressPlusDamageOpponentThree={() => onPressPlusDamageOpponentThree(playerFour)}
+              onPressMinusDamageOpponent={(player, opponent) => onPressMinusDamageOpponent(player, opponent)}
+              onPressPlusDamageOpponent={(player, opponent) => onPressPlusDamageOpponent(player, opponent)}
             />
           </View>
         </View>
