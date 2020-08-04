@@ -8,7 +8,7 @@ export default function CommanderDamage(props) {
       {/* opponent one */}
       <View style={{ flexDirection: 'row'}}>
         <TouchableOpacity
-          onPress={() => props.onPressMinusDamageOpponent(props.player, "damageOpponentOne")}
+          onPress={() => props.onPressMinusDamageOpponent("damageOpponentOne")}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -28,7 +28,7 @@ export default function CommanderDamage(props) {
           <Text style={{ color: 'white', fontSize: 20 }}> {props.damageOpponentOne} </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.onPressPlusDamageOpponent(props.player, "damageOpponentOne")}
+          onPress={() => props.onPressPlusDamageOpponent("damageOpponentOne")}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -41,7 +41,7 @@ export default function CommanderDamage(props) {
       {/* opponent two */}
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity
-          onPress={() => props.onPressMinusDamageOpponent(props.player, "damageOpponentTwo")}
+          onPress={() => props.onPressMinusDamageOpponent("damageOpponentTwo")}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -60,7 +60,7 @@ export default function CommanderDamage(props) {
           <Text style={{ color: 'white', fontSize: 20 }}> {props.damageOpponentTwo} </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.onPressPlusDamageOpponent(props.player, "damageOpponentTwo")}
+          onPress={() => props.onPressPlusDamageOpponent("damageOpponentTwo")}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -73,7 +73,7 @@ export default function CommanderDamage(props) {
       {/* opponent three */}
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity
-          onPress={() => props.onPressMinusDamageOpponent(props.player, "damageOpponentThree")}
+          onPress={() => props.onPressMinusDamageOpponent("damageOpponentThree")}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -92,7 +92,7 @@ export default function CommanderDamage(props) {
           <Text style={{ color: 'white', fontSize: 20 }}> {props.damageOpponentThree} </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.onPressPlusDamageOpponent(props.player, "damageOpponentThree")}
+          onPress={() => props.onPressPlusDamageOpponent("damageOpponentThree")}
           style={{
             justifyContent: 'center',
             alignItems: 'center',

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, TouchableOpacity, Animated, View } from 'react-native';
+import { Text, TouchableOpacity, Animated, View, ColorPropType } from 'react-native';
 import { AntDesign, Entypo } from "@expo/vector-icons";
 
 export default function LifeTotal(props) {
@@ -20,6 +20,7 @@ export default function LifeTotal(props) {
 
 
       <TouchableOpacity
+        onPress={props.onPressLifeTotal}
         style={{
           borderRadius: 10,
           borderWidth: 1,
