@@ -1,9 +1,10 @@
 // import * as React from 'react';
 import React, { useState, useReducer } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button, Modal } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Button, Modal } from 'react-native';
 
 import LifeTotal from '../components/LifeTotal';
 import CommanderDamage from '../components/CommanderDamage';
+import Randomizer from '../components/Randomizer';
 
 function playerReducer(state, action) {
   switch (action.type) {
@@ -37,6 +38,12 @@ function playerReducer(state, action) {
   return state;
 };
 
+// Calculate Randomizer Coordinates
+let { width, height } = Dimensions.get('window')
+let xPosition = width / 2;
+let yPosition = height / 2;
+
+// Settings
 const defaultSettings = {
   lifeTotal: 40,
   commanderTax: 0,
@@ -209,8 +216,14 @@ export default function FourPlayer() {
             </View>
           </View>
         </View>
-
       </View>
+
+      <Randomizer
+        xPosition={xPosition}
+        yPosition={yPosition}
+        size={40}
+      />
+
     </View>
   );
 }
