@@ -37,8 +37,6 @@ function playerReducer(state, action) {
   return state;
 };
 
-
-
 const defaultSettings = {
   lifeTotal: 40,
   commanderTax: 0,
@@ -49,89 +47,27 @@ const defaultSettings = {
   damageOpponentThree: 0,
 };
 
+const colorSettings = {
+  playerOne: {
+    backgroundColor: "darkred"
+  },
+  playerTwo: {
+    backgroundColor: "darkblue"
+  },
+  playerThree: {
+    backgroundColor: "darkgreen"
+  },
+  playerFour: {
+    backgroundColor: "black"
+  },
+}
+
 export default function FourPlayer() {
 
-  const [one, dispatchOne] = useReducer(playerReducer, defaultSettings);
-
-  const [playerOne, setPlayerOne] = useState({
-    lifeTotal: 40,
-    commanderTax: 0,
-    poison: 0,
-    poisonVisible: false,
-    damageOpponentOne: 0,
-    damageOpponentTwo: 0,
-    damageOpponentThree: 0,
-    event: "setPlayerOne",
-    backgroundColor: "darkred"
-  });
-
-  const [playerTwo, setPlayerTwo] = useState({
-    lifeTotal: 40,
-    commanderTax: 0,
-    poison: 0,
-    poisonVisible: false,
-    damageOpponentOne: 0,
-    damageOpponentTwo: 0,
-    damageOpponentThree: 0,
-    event: "setPlayerTwo",
-    backgroundColor: "darkblue"
-  });
-
-  const [playerThree, setPlayerThree] = useState({
-    lifeTotal: 40,
-    commanderTax: 0,
-    poison: 0,
-    poisonVisible: false,
-    damageOpponentOne: 0,
-    damageOpponentTwo: 0,
-    damageOpponentThree: 0,
-    event: "setPlayerThree",
-    backgroundColor: "darkgreen"
-  });
-
-  const [playerFour, setPlayerFour] = useState({
-    lifeTotal: 40,
-    commanderTax: 0,
-    poison: 0,
-    poisonVisible: false,
-    damageOpponentOne: 0,
-    damageOpponentTwo: 0,
-    damageOpponentThree: 0,
-    event: "setPlayerFour",
-    backgroundColor: "black"
-  });
-
-  function onPressMinusLifeTotal(mPlayer) {
-    eval(mPlayer.event)({
-      ...mPlayer,
-      lifeTotal: mPlayer.lifeTotal - 1
-    })
-  }
-
-  function onPressPlusLifeTotal(mPlayer) {
-    eval(mPlayer.event)({
-      ...mPlayer,
-      lifeTotal: mPlayer.lifeTotal + 1
-    })
-  }
-
-  function onPressMinusDamageOpponent(mPlayer, sOpponent) {
-    if (mPlayer[sOpponent] > 0) {
-      eval(mPlayer.event)({
-        ...mPlayer,
-        lifeTotal: mPlayer.lifeTotal + 1,
-        [sOpponent]: mPlayer[sOpponent] - 1
-      })
-    }
-  }
-
-  function onPressPlusDamageOpponent(mPlayer, sOpponent) {
-    eval(mPlayer.event)({
-      ...mPlayer,
-      lifeTotal: mPlayer.lifeTotal - 1,
-      [sOpponent]: mPlayer[sOpponent] + 1
-    })
-  }
+  const [playerOne, dispatchOne] = useReducer(playerReducer, defaultSettings);
+  const [playerTwo, dispatchTwo] = useReducer(playerReducer, defaultSettings);
+  const [playerThree, dispatchThree] = useReducer(playerReducer, defaultSettings);
+  const [playerFour, dispatchFour] = useReducer(playerReducer, defaultSettings);
 
   return (
     <View
@@ -143,19 +79,17 @@ export default function FourPlayer() {
         {/* Player 1 - Top Left */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: playerOne.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: colorSettings.playerOne.backgroundColor }]}>
           <View style={styles.playerAreaHalf}>
             <View
               style={{
                 transform: [{ rotate: "90deg" }]
               }}>
               <CommanderDamage
-                colorOpponentOne={playerTwo.backgroundColor}
-                damageOpponentOne={one.damageOpponentOne}
-                colorOpponentTwo={playerFour.backgroundColor}
-                damageOpponentTwo={one.damageOpponentTwo}
-                colorOpponentThree={playerThree.backgroundColor}
-                damageOpponentThree={one.damageOpponentThree}
+                player={playerOne}
+                colorOpponentOne={colorSettings.playerTwo.backgroundColor}
+                colorOpponentTwo={colorSettings.playerFour.backgroundColor}
+                colorOpponentThree={colorSettings.playerThree.backgroundColor}
                 onPressPlusDamageOpponent={(opponent) => dispatchOne({ type: 'plusDamageOpponent', value: opponent })}
                 onPressMinusDamageOpponent={(opponent) => dispatchOne({ type: 'minusDamageOpponent', value: opponent })}
               />
@@ -167,7 +101,7 @@ export default function FourPlayer() {
                 transform: [{ rotate: "90deg" }]
               }}>
               <LifeTotal
-                lifeTotal={one.lifeTotal}
+                lifeTotal={playerOne.lifeTotal}
                 // onPressLifeTotal={() => toggleModalVisible()}
                 onPressPlus={() => dispatchOne({ type: 'plusLifeTotal' })}
                 onPressMinus={() => dispatchOne({ type: 'minusLifeTotal' })}
@@ -180,7 +114,7 @@ export default function FourPlayer() {
         {/* Top Right */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: playerTwo.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: colorSettings.playerTwo.backgroundColor }]}>
           <View style={[styles.playerAreaHalf, { alignItems: 'flex-start' }]}>
             <View
               style={{
@@ -188,8 +122,8 @@ export default function FourPlayer() {
               }}>
               <LifeTotal
                 lifeTotal={playerTwo.lifeTotal}
-                onPressPlus={() => onPressPlusLifeTotal(playerTwo)}
-                onPressMinus={() => onPressMinusLifeTotal(playerTwo)}
+                onPressPlus={() => dispatchTwo({ type: 'plusLifeTotal' })}
+                onPressMinus={() => dispatchTwo({ type: 'minusLifeTotal' })}
               />
             </View>
           </View>
@@ -200,14 +134,11 @@ export default function FourPlayer() {
               }}>
               <CommanderDamage
                 player={playerTwo}
-                colorOpponentOne={playerFour.backgroundColor}
-                damageOpponentOne={playerTwo.damageOpponentOne}
-                colorOpponentTwo={playerThree.backgroundColor}
-                damageOpponentTwo={playerTwo.damageOpponentTwo}
-                colorOpponentThree={playerOne.backgroundColor}
-                damageOpponentThree={playerTwo.damageOpponentThree}
-                onPressMinusDamageOpponent={(player, opponent) => onPressMinusDamageOpponent(player, opponent)}
-                onPressPlusDamageOpponent={(player, opponent) => onPressPlusDamageOpponent(player, opponent)}
+                colorOpponentOne={colorSettings.playerFour.backgroundColor}
+                colorOpponentTwo={colorSettings.playerThree.backgroundColor}
+                colorOpponentThree={colorSettings.playerOne.backgroundColor}
+                onPressPlusDamageOpponent={(opponent) => dispatchTwo({ type: 'plusDamageOpponent', value: opponent })}
+                onPressMinusDamageOpponent={(opponent) => dispatchTwo({ type: 'minusDamageOpponent', value: opponent })}
               />
             </View>
           </View>
@@ -216,7 +147,7 @@ export default function FourPlayer() {
         {/* Bottom Left */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: playerThree.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: colorSettings.playerThree.backgroundColor }]}>
           <View style={styles.playerAreaHalf}>
             <View
               style={{
@@ -224,14 +155,11 @@ export default function FourPlayer() {
               }}>
               <CommanderDamage
                 player={playerThree}
-                colorOpponentOne={playerOne.backgroundColor}
-                damageOpponentOne={playerThree.damageOpponentOne}
-                colorOpponentTwo={playerTwo.backgroundColor}
-                damageOpponentTwo={playerThree.damageOpponentTwo}
-                colorOpponentThree={playerFour.backgroundColor}
-                damageOpponentThree={playerThree.damageOpponentThree}
-                onPressMinusDamageOpponent={(player, opponent) => onPressMinusDamageOpponent(player, opponent)}
-                onPressPlusDamageOpponent={(player, opponent) => onPressPlusDamageOpponent(player, opponent)}
+                colorOpponentOne={colorSettings.playerOne.backgroundColor}
+                colorOpponentTwo={colorSettings.playerTwo.backgroundColor}
+                colorOpponentThree={colorSettings.playerFour.backgroundColor}
+                onPressPlusDamageOpponent={(opponent) => dispatchThree({ type: 'plusDamageOpponent', value: opponent })}
+                onPressMinusDamageOpponent={(opponent) => dispatchThree({ type: 'minusDamageOpponent', value: opponent })}
               />
             </View>
           </View>
@@ -242,8 +170,8 @@ export default function FourPlayer() {
               }}>
               <LifeTotal
                 lifeTotal={playerThree.lifeTotal}
-                onPressPlus={() => onPressPlusLifeTotal(playerThree)}
-                onPressMinus={() => onPressMinusLifeTotal(playerThree)}
+                onPressPlus={() => dispatchThree({ type: 'plusLifeTotal' })}
+                onPressMinus={() => dispatchThree({ type: 'minusLifeTotal' })}
               />
             </View>
           </View>
@@ -252,7 +180,7 @@ export default function FourPlayer() {
         {/* Bottom Right */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: playerFour.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: colorSettings.playerFour.backgroundColor }]}>
           <View style={[styles.playerAreaHalf, { alignItems: 'flex-start' }]}>
             <View
               style={{
@@ -260,8 +188,8 @@ export default function FourPlayer() {
               }}>
               <LifeTotal
                 lifeTotal={playerFour.lifeTotal}
-                onPressPlus={() => onPressPlusLifeTotal(playerFour)}
-                onPressMinus={() => onPressMinusLifeTotal(playerFour)}
+                onPressPlus={() => dispatchFour({ type: 'plusLifeTotal' })}
+                onPressMinus={() => dispatchFour({ type: 'minusLifeTotal' })}
               />
             </View>
           </View>
@@ -272,14 +200,11 @@ export default function FourPlayer() {
               }}>
               <CommanderDamage
                 player={playerFour}
-                colorOpponentOne={playerThree.backgroundColor}
-                damageOpponentOne={playerFour.damageOpponentOne}
-                colorOpponentTwo={playerOne.backgroundColor}
-                damageOpponentTwo={playerFour.damageOpponentTwo}
-                colorOpponentThree={playerTwo.backgroundColor}
-                damageOpponentThree={playerFour.damageOpponentThree}
-                onPressMinusDamageOpponent={(player, opponent) => onPressMinusDamageOpponent(player, opponent)}
-                onPressPlusDamageOpponent={(player, opponent) => onPressPlusDamageOpponent(player, opponent)}
+                colorOpponentOne={colorSettings.playerThree.backgroundColor}
+                colorOpponentTwo={colorSettings.playerOne.backgroundColor}
+                colorOpponentThree={colorSettings.playerTwo.backgroundColor}
+                onPressPlusDamageOpponent={(opponent) => dispatchFour({ type: 'plusDamageOpponent', value: opponent })}
+                onPressMinusDamageOpponent={(opponent) => dispatchFour({ type: 'minusDamageOpponent', value: opponent })}
               />
             </View>
           </View>

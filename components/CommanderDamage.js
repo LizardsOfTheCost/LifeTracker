@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, TouchableHighlight, View } from 'react-native';
 
 export default function CommanderDamage(props) {
   return (
@@ -7,7 +7,7 @@ export default function CommanderDamage(props) {
       style={{ flexDirection: 'row', justifyContent: 'center' }}>
       {/* opponent one */}
       <View style={{ flexDirection: 'row'}}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => props.onPressMinusDamageOpponent("damageOpponentOne")}
           style={{
             justifyContent: 'center',
@@ -15,9 +15,9 @@ export default function CommanderDamage(props) {
             padding: 10
           }}>
           <Text style={{ color: 'white' }}> - </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
-          // onPress={props.onPressDamageOpponentOne}
+          onPress={() => props.onPressPlusDamageOpponent("damageOpponentOne")}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
@@ -25,9 +25,9 @@ export default function CommanderDamage(props) {
             borderRadius: 10,
             padding: 10
           }}>
-          <Text style={{ color: 'white', fontSize: 20 }}> {props.damageOpponentOne} </Text>
+          <Text style={{ color: 'white', fontSize: 20 }}> {props.player.damageOpponentOne} </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentOne")}
           style={{
             justifyContent: 'center',
@@ -35,7 +35,7 @@ export default function CommanderDamage(props) {
             padding: 10
           }}>
           <Text style={{ color: 'white'}}> + </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {/* opponent two */}
@@ -50,14 +50,14 @@ export default function CommanderDamage(props) {
           <Text style={{ color: 'white'}}> - </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          // onPress={props.onPressDamageOpponentTwo}
+          onPress={() => props.onPressPlusDamageOpponent("damageOpponentTwo")}
           style={{
             alignItems: 'center',
             backgroundColor: props.colorOpponentTwo,
             borderRadius: 10,
             padding: 10
           }}>
-          <Text style={{ color: 'white', fontSize: 20 }}> {props.damageOpponentTwo} </Text>
+          <Text style={{ color: 'white', fontSize: 20 }}> {props.player.damageOpponentTwo} </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentTwo")}
@@ -72,7 +72,7 @@ export default function CommanderDamage(props) {
 
       {/* opponent three */}
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => props.onPressMinusDamageOpponent("damageOpponentThree")}
           style={{
             justifyContent: 'center',
@@ -80,18 +80,18 @@ export default function CommanderDamage(props) {
             padding: 10
           }}>
           <Text style={{ color: 'white' }}> - </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
-          // onPress={props.onPressDamageOpponentThree}
+          onPress={() => props.onPressPlusDamageOpponent("damageOpponentThree")}
           style={{
             alignItems: 'center',
             backgroundColor: props.colorOpponentThree,
             borderRadius: 10,
             padding: 10
           }}>
-          <Text style={{ color: 'white', fontSize: 20 }}> {props.damageOpponentThree} </Text>
+          <Text style={{ color: 'white', fontSize: 20 }}> {props.player.damageOpponentThree} </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentThree")}
           style={{
             justifyContent: 'center',
@@ -99,7 +99,7 @@ export default function CommanderDamage(props) {
             padding: 10
           }}>
           <Text style={{ color: 'white' }}> + </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
     </View>
