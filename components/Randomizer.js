@@ -5,6 +5,49 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 const mode = new Animated.Value(0);
 
+const options = {
+    available: [
+        {
+            icon: "location-arrow",
+        },
+        {
+            icon: "biohazard",
+        },
+        {
+            icon: "accessible-icon",
+        },
+        {
+            icon: "syringe",
+        },
+    ],
+    coordinates: [
+
+    ],
+    selected: {
+        icon: "dice-d20",
+    },
+}
+
+const leftPosition = mode.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -100]
+})
+
+const topPosition = mode.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -100]
+})
+
+const rightPosition = mode.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 100]
+})
+
+const bottomPosition = mode.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 100]
+})
+
 function calcSettings(props) {
     let paddingMultiplyer = 1.25;
 
@@ -25,7 +68,11 @@ function calcSettings(props) {
     }
 }
 
-function handlePress() {
+function handleLongPress() {
+    changeMode()
+}
+
+function changeMode() {
     Animated.sequence([
         Animated.timing(mode, {
             toValue: mode._value === 0 ? 1 : 0
@@ -37,29 +84,9 @@ export default function Randomizer(props) {
 
     const dynamicSettings = calcSettings(props);
 
-    const arrowX = mode.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, -100]
-    })
-
-    const chairX = mode.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 100]
-    })
-
-    const bioY = mode.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, -100]
-    })
-
-    const syringeY = mode.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 100]
-    })
-
     return (
         <View style={{ position: "absolute", alignItems: "center" }}>
-            <Animated.View style={{ position: "absolute", left: arrowX }} >
+            <Animated.View style={{ position: "absolute", left: leftPosition }} >
                 <View style={[
                     styles.button,
                     { width: dynamicSettings.width },
@@ -71,7 +98,7 @@ export default function Randomizer(props) {
                     <FontAwesome5 name="location-arrow" size={dynamicSettings.generalSize / 1.5} color="#FFF" />
                 </View>
             </Animated.View>
-            <Animated.View style={{ position: "absolute", top: bioY }} >
+            <Animated.View style={{ position: "absolute", top: topPosition }} >
                 <View style={[
                     styles.button,
                     { width: dynamicSettings.width },
@@ -83,7 +110,7 @@ export default function Randomizer(props) {
                     <FontAwesome5 name="biohazard" size={dynamicSettings.generalSize / 1.5} color="#FFF" />
                 </View>
             </Animated.View>
-            <Animated.View style={{ position: "absolute", left: chairX }} >
+            <Animated.View style={{ position: "absolute", left: rightPosition }} >
                 <View style={[
                     styles.button,
                     { width: dynamicSettings.width },
@@ -95,7 +122,7 @@ export default function Randomizer(props) {
                     <FontAwesome5 name="accessible-icon" size={dynamicSettings.generalSize / 1.5} color="#FFF" />
                 </View>
             </Animated.View>
-            <Animated.View style={{ position: "absolute", top: syringeY }} >
+            <Animated.View style={{ position: "absolute", top: bottomPosition }} >
                 <View style={[
                     styles.button,
                     { width: dynamicSettings.width },
@@ -107,7 +134,7 @@ export default function Randomizer(props) {
                     <FontAwesome5 name="syringe" size={dynamicSettings.generalSize / 1.5} color="#FFF" />
                 </View>
             </Animated.View>
-            
+
             <Animated.View style={[
                 styles.button,
                 { width: dynamicSettings.width },
@@ -116,9 +143,9 @@ export default function Randomizer(props) {
                 { left: dynamicSettings.xPosition },
                 { borderRadius: dynamicSettings.borderRadius },
             ]}>
-                <TouchableOpacity onPress={handlePress} underlayColor="#805618">
+                <TouchableOpacity onLongPress={handleLongPress} underlayColor="#805618">
                     <Animated.View>
-                        <FontAwesome5 name="dice-d20" size={dynamicSettings.generalSize} color="#FFF" />
+                        <FontAwesome5 name={options.selected.icon} size={dynamicSettings.generalSize} color="#FFF" />
                     </Animated.View>
                 </TouchableOpacity>
             </Animated.View>
