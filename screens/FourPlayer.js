@@ -221,7 +221,7 @@ export default function FourPlayer() {
       <Randomizer
         xPosition={xPosition}
         yPosition={yPosition}
-        size={50}
+        size={45}
       />
 
     </View>
