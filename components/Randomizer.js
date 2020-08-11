@@ -2,119 +2,86 @@ import React, { useReducer } from 'react';
 import { TouchableOpacity, Animated, View, StyleSheet } from 'react-native';
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import OptionItem from './OptionItem';
-
-
 function optionReducer(state, action) {
     switch (action.type) {
-        case 'select':
-            changeMode()
-
-            state.available.map((x, i) => {
-                x.selected = (i === action.value) ? true : false;
-            })
-
-            return {
-                ...state,
-            }
-        case 'minusLifeTotal':
-            return {
-                ...state,
-                lifeTotal: state.lifeTotal - 1,
-            }
-        case 'plusDamageOpponent':
-            return {
-                ...state,
-                lifeTotal: state.lifeTotal - 1,
-                [action.value]: state[action.value] + 1,
-            }
-        case 'minusDamageOpponent':
-            return {
-                ...state,
-                ...(state[action.value] > 0 && {
-                    lifeTotal: state.lifeTotal + 1,
-                    [action.value]: state[action.value] - 1,
-                }),
-            }
+        case "select":
+            return state;
         default:
-            break;
+            return state;
     }
-    return state;
-};
-
-const mode = new Animated.Value(0);
-
-const leftPosition = mode.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -100]
-})
-
-const topPosition = mode.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -100]
-})
-
-const rightPosition = mode.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 100]
-})
-
-const bottomPosition = mode.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 100]
-})
-
-const initialOptions = {
-    available: [
-        {
-            icon: "location-arrow",
-            selected: false,
-        },
-        {
-            icon: "biohazard",
-            selected: false,
-        },
-        {
-            icon: "accessible-icon",
-            selected: false,
-        },
-        {
-            icon: "syringe",
-            selected: false,
-        },
-        {
-            icon: "dice-d20",
-            selected: true,
-        },
-    ],
-    coordinates: [
-        {
-            key: "left",
-            horizontal: leftPosition,
-            vertical: 0,
-        },
-        {
-            key: "top",
-            horizontal: 0,
-            vertical: topPosition,
-        },
-        {
-            key: "right",
-            horizontal: rightPosition,
-            vertical: 0,
-        },
-        {
-            key: "bottom",
-            horizontal: 0,
-            vertical: bottomPosition,
-        },
-        // {
-        //     key: "center",
-        //     horizontal: 0,
-        //     vertical: 0,
-        // },
-    ],
 }
+
+const Context = React.createContext();
+const mode = new Animated.Value(0);
+const initialOptions = [
+    {
+        id: "left",
+        coordinates: {
+            horizontal: mode.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, -100]
+            }),
+            vertical: 0,
+        },
+        item: {
+            id: "arrow",
+            icon: "location-arrow",
+        },
+    },
+    {
+        id: "top",
+        coordinates: {
+            horizontal: 0,
+            vertical: mode.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, -100]
+            }),
+        },
+        item: {
+            id: "biohazard",
+            icon: "biohazard",
+        },
+    },
+    {
+        id: "right",
+        coordinates: {
+            horizontal: mode.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 100]
+            }),
+            vertical: 0,
+        },
+        item: {
+            id: "chair",
+            icon: "accessible-icon",
+        },
+    },
+    {
+        id: "bottom",
+        coordinates: {
+            horizontal: 0,
+            vertical: mode.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 100]
+            }),
+        },
+        item: {
+            id: "syringe",
+            icon: "syringe",
+        },
+    },
+    {
+        id: "center",
+        coordinates: {
+            horizontal: 0,
+            vertical: 0,
+        },
+        item: {
+            id: "dice",
+            icon: "dice-d20",
+        },
+    },
+];
 
 function calcSettings(props) {
     let paddingMultiplyer = 1.5;
@@ -127,19 +94,15 @@ function calcSettings(props) {
     let yPosition = props.yPosition - (height / 2);
 
     return {
-        width: width,
-        height: height,
-        borderRadius: borderRadius,
-        xPosition: xPosition,
-        yPosition: yPosition,
-        generalSize: generalSize,
+        position: {
+            width: width,
+            height: height,
+            borderRadius: borderRadius,
+            top: yPosition,
+            left: xPosition,
+        },
+        size: generalSize
     }
-}
-
-
-
-function handleLongPress() {
-    changeMode()
 }
 
 function changeMode() {
@@ -150,101 +113,61 @@ function changeMode() {
     ]).start()
 }
 
+function handleLongPress() {
+    changeMode()
+}
+
 export default function Randomizer(props) {
     const dynamicSettings = calcSettings(props);
 
-    const [options, dispatchOptions] = useReducer(optionReducer, initialOptions);
-
-    const optionItems = options.available.filter(a => !a.selected)
-    // .map((b, i) => {
-    //     return <OptionItem key={i} icon={b.icon} coordinates={options.coordinates[i]} settins={dynamicSettings} />
-    // })
+    const [options, dispatch] = useReducer(optionReducer, initialOptions);
 
     return (
-        <View style={{ position: "absolute", alignItems: "center" }}>
-            {/* {optionItems} */}
-            <Animated.View style={{ position: "absolute", left: options.coordinates[0].horizontal, top: options.coordinates[0].vertical }} >
-                <View style={[
-                    styles.button,
-                    { width: dynamicSettings.width },
-                    { height: dynamicSettings.height },
-                    { top: dynamicSettings.yPosition },
-                    { left: dynamicSettings.xPosition },
-                    { borderRadius: dynamicSettings.borderRadius },
-                ]}>
-                    <TouchableOpacity onPress={() => dispatchOptions({ type: 'select', value: 0 })}>
-                        <Animated.View>
-                            <FontAwesome5 name={optionItems[0].icon} size={dynamicSettings.generalSize} color="#FFF" />
-                        </Animated.View>
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
-            <Animated.View style={{ position: "absolute", left: options.coordinates[1].horizontal, top: options.coordinates[1].vertical }} >
-                <View style={[
-                    styles.button,
-                    { width: dynamicSettings.width },
-                    { height: dynamicSettings.height },
-                    { top: dynamicSettings.yPosition },
-                    { left: dynamicSettings.xPosition },
-                    { borderRadius: dynamicSettings.borderRadius },
-                ]}>
-                    <TouchableOpacity onPress={() => dispatchOptions({ type: 'select', value: 1 })}>
-                        <Animated.View>
-                            <FontAwesome5 name={optionItems[1].icon} size={dynamicSettings.generalSize} color="#FFF" />
-                        </Animated.View>
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
-            <Animated.View style={{ position: "absolute", left: options.coordinates[2].horizontal, top: options.coordinates[2].vertical }} >
-                <View style={[
-                    styles.button,
-                    { width: dynamicSettings.width },
-                    { height: dynamicSettings.height },
-                    { top: dynamicSettings.yPosition },
-                    { left: dynamicSettings.xPosition },
-                    { borderRadius: dynamicSettings.borderRadius },
-                ]}>
-                    <TouchableOpacity onPress={() => dispatchOptions({ type: 'select', value: 2 })}>
-                        <Animated.View>
-                            <FontAwesome5 name={optionItems[2].icon} size={dynamicSettings.generalSize} color="#FFF" />
-                        </Animated.View>
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
-            <Animated.View style={{ position: "absolute", left: options.coordinates[3].horizontal, top: options.coordinates[3].vertical }} >
-                <View style={[
-                    styles.button,
-                    { width: dynamicSettings.width },
-                    { height: dynamicSettings.height },
-                    { top: dynamicSettings.yPosition },
-                    { left: dynamicSettings.xPosition },
-                    { borderRadius: dynamicSettings.borderRadius },
-                ]}>
-                    <TouchableOpacity onPress={() => dispatchOptions({ type: 'select', value: 3 })}>
-                        <Animated.View>
-                            <FontAwesome5 name={optionItems[3].icon} size={dynamicSettings.generalSize} color="#FFF" />
-                        </Animated.View>
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
+        <Context.Provider value={{ dispatch, dynamicSettings }}>
+            <View style={{ position: "absolute", alignItems: "center" }}>
+                <OptionItems items={options} />
+                {/* <Animated.View style={{ position: "absolute" }} >
+                    <Animated.View style={[
+                        styles.button,
+                        dynamicSettings.position
+                    ]}>
+                        <TouchableOpacity onLongPress={handleLongPress} underlayColor="#805618">
+                            <Animated.View>
+                                <FontAwesome5 name="syringe" size={dynamicSettings.size} color="#FFF" />
+                            </Animated.View>
+                        </TouchableOpacity>
+                    </Animated.View>
+                </Animated.View> */}
+            </View >
+        </Context.Provider>
+    )
+}
 
-            <Animated.View style={{ position: "absolute", top: 0, left: 0 }} >
-                <Animated.View style={[
-                    styles.button,
-                    { width: dynamicSettings.width },
-                    { height: dynamicSettings.height },
-                    { top: dynamicSettings.yPosition },
-                    { left: dynamicSettings.xPosition },
-                    { borderRadius: dynamicSettings.borderRadius },
-                ]}>
-                    <TouchableOpacity onLongPress={handleLongPress} underlayColor="#805618">
-                        <Animated.View>
-                            <FontAwesome5 name={options.available.find(a => a.selected).icon} size={dynamicSettings.generalSize} color="#FFF" />
-                        </Animated.View>
-                    </TouchableOpacity>
+function OptionItems({ items }) {
+    return items.map(item => <OptionItem key={item.id} {...item} />);
+}
+
+function OptionItem({ id, coordinates, item }) {
+    return (
+        <Context.Consumer>
+            {optionContext => (
+                <Animated.View style={{ position: "absolute", left: coordinates.horizontal, top: coordinates.vertical }} >
+                    <View style={[
+                        styles.button,
+                        optionContext.dynamicSettings.position
+                    ]}>
+                        <TouchableOpacity onLongPress={handleLongPress}
+                            onPress={() => optionContext.dispatch({ type: 'select', payload: id })}>
+                            <Animated.View>
+                                <FontAwesome5 name={item.icon}
+                                    size={optionContext.dynamicSettings.size}
+                                    color="#FFF" />
+                            </Animated.View>
+                        </TouchableOpacity>
+                    </View>
                 </Animated.View>
-            </Animated.View>
-        </View >
+            )}
+        </Context.Consumer>
     )
 }
 
@@ -258,12 +181,3 @@ const styles = StyleSheet.create({
         position: "absolute",
     }
 })
-
-/**
- * To Add:
- *  - d20
- *  - d4
- *  - d3
- *  - Coin
- *  - Arrow (spinning / pointing)
- */
