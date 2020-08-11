@@ -5,7 +5,28 @@ import { FontAwesome5 } from "@expo/vector-icons";
 function optionReducer(state, action) {
     switch (action.type) {
         case "select":
-            return state;
+            let newState;
+
+            if (mode._value) {
+                const selectedItem = state.find(item => item.id === action.payload).item;
+                const centeredItem = state.find(item => item.id === "center").item;
+
+                newState = state.map(a => {
+                    if (a.id === action.payload) {
+                        a.item = centeredItem
+                    }
+                    if (a.id === "center") {
+                        a.item = selectedItem
+                    }
+
+                    return a
+                })
+                changeMode();
+            } else {
+                newState = state;
+            }
+
+            return newState;
         default:
             return state;
     }
@@ -126,18 +147,6 @@ export default function Randomizer(props) {
         <Context.Provider value={{ dispatch, dynamicSettings }}>
             <View style={{ position: "absolute", alignItems: "center" }}>
                 <OptionItems items={options} />
-                {/* <Animated.View style={{ position: "absolute" }} >
-                    <Animated.View style={[
-                        styles.button,
-                        dynamicSettings.position
-                    ]}>
-                        <TouchableOpacity onLongPress={handleLongPress} underlayColor="#805618">
-                            <Animated.View>
-                                <FontAwesome5 name="syringe" size={dynamicSettings.size} color="#FFF" />
-                            </Animated.View>
-                        </TouchableOpacity>
-                    </Animated.View>
-                </Animated.View> */}
             </View >
         </Context.Provider>
     )
