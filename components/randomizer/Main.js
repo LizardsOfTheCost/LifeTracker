@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
-import { TouchableOpacity, Animated, View, StyleSheet } from 'react-native';
-import { FontAwesome5 } from "@expo/vector-icons";
+import { Animated, View } from 'react-native';
+
+import OptionItems from './OptionItems';
 
 function optionReducer(state, action) {
     switch (action.type) {
@@ -32,7 +33,6 @@ function optionReducer(state, action) {
     }
 }
 
-const Context = React.createContext();
 const mode = new Animated.Value(0);
 const initialOptions = [
     {
@@ -138,55 +138,19 @@ function handleLongPress() {
     changeMode()
 }
 
-export default function Randomizer(props) {
+export default function Main(props) {
     const dynamicSettings = calcSettings(props);
 
     const [options, dispatch] = useReducer(optionReducer, initialOptions);
 
     return (
-        <Context.Provider value={{ dispatch, dynamicSettings }}>
-            <View style={{ position: "absolute", alignItems: "center" }}>
-                <OptionItems items={options} />
-            </View >
-        </Context.Provider>
+        <View style={{ position: "absolute", alignItems: "center" }}>
+            <OptionItems
+                items={options}
+                settings={dynamicSettings}
+                onLongPress={handleLongPress}
+                onPress={(action) => dispatch(action)}
+            />
+        </View >
     )
 }
-
-function OptionItems({ items }) {
-    return items.map(item => <OptionItem key={item.id} {...item} />);
-}
-
-function OptionItem({ id, coordinates, item }) {
-    return (
-        <Context.Consumer>
-            {optionContext => (
-                <Animated.View style={{ position: "absolute", left: coordinates.horizontal, top: coordinates.vertical }} >
-                    <View style={[
-                        styles.button,
-                        optionContext.dynamicSettings.position
-                    ]}>
-                        <TouchableOpacity onLongPress={handleLongPress}
-                            onPress={() => optionContext.dispatch({ type: 'select', payload: id })}>
-                            <Animated.View>
-                                <FontAwesome5 name={item.icon}
-                                    size={optionContext.dynamicSettings.size}
-                                    color="#FFF" />
-                            </Animated.View>
-                        </TouchableOpacity>
-                    </View>
-                </Animated.View>
-            )}
-        </Context.Consumer>
-    )
-}
-
-const styles = StyleSheet.create({
-    button: {
-        backgroundColor: "#805618",
-        borderColor: "#FFF",
-        borderWidth: 3,
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-    }
-})

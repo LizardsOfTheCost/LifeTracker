@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Button, Modal } f
 
 import LifeTotal from '../components/LifeTotal';
 import CommanderDamage from '../components/CommanderDamage';
-import Randomizer from '../components/Randomizer';
+import Randomizer from '../components/randomizer/Main';
 
 function playerReducer(state, action) {
   switch (action.type) {
