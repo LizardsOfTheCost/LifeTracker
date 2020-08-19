@@ -94,7 +94,8 @@ export default function FourPlayer() {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          marginTop: 22
+          marginTop: 22,
+          transform: [{ rotate: "90deg" }]
         }}>
           <View style={{
             margin: 20,
