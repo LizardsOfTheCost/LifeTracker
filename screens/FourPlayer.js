@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React, { useState, useReducer } from 'react';
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Button, Modal } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, TouchableHighlight, Button, Modal } from 'react-native';
 
 import LifeTotal from '../components/LifeTotal';
 import CommanderDamage from '../components/CommanderDamage';
@@ -76,9 +76,66 @@ export default function FourPlayer() {
   const [playerThree, dispatchThree] = useReducer(playerReducer, defaultSettings);
   const [playerFour, dispatchFour] = useReducer(playerReducer, defaultSettings);
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View
       style={{ height: '100%' }}>
+
+      <Modal
+        animationType="slide" // maybe fade?
+        transparent={true} // !fullscreen 
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 22
+        }}>
+          <View style={{
+            margin: 20,
+            backgroundColor: "white",
+            borderRadius: 20,
+            padding: 35,
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5
+          }}>
+            <Text style={{
+              marginBottom: 15,
+              textAlign: "center"
+            }}>Hello World!</Text>
+
+            <TouchableHighlight
+              style={{
+                borderRadius: 20,
+                padding: 10,
+                elevation: 2,
+                backgroundColor: "#2196F3"
+              }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={{
+                color: "white",
+                fontWeight: "bold",
+                textAlign: "center"
+              }}>Hide Modal</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
 
       <View
         style={styles.screen}>
@@ -99,6 +156,7 @@ export default function FourPlayer() {
                 colorOpponentThree={colorSettings.playerThree.backgroundColor}
                 onPressPlusDamageOpponent={(opponent) => dispatchOne({ type: 'plusDamageOpponent', value: opponent })}
                 onPressMinusDamageOpponent={(opponent) => dispatchOne({ type: 'minusDamageOpponent', value: opponent })}
+                onLongPressDamageOpponent={() => setModalVisible(true)}
               />
             </View>
           </View>

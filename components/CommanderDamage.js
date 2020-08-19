@@ -18,6 +18,7 @@ export default function CommanderDamage(props) {
         </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentOne")}
+          onLongPress={() => props.onLongPressDamageOpponent()}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
