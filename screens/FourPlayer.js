@@ -1,10 +1,29 @@
-// import * as React from 'react';
 import React, { useState, useReducer } from 'react';
 import { Dimensions, StyleSheet, Text, View, TouchableHighlight, Button, Modal } from 'react-native';
 
+import ValueHelper from '../components/ValueHelper';
 import LifeTotal from '../components/LifeTotal';
 import CommanderDamage from '../components/CommanderDamage';
 import Randomizer from '../components/randomizer/Main';
+
+function valueHelpReducer(state, action) {
+  switch (action.type) {
+    case 'open':
+      return {
+        ...state,
+        visible: true
+      }
+    case 'close':
+      return {
+        ...state,
+        visible: false
+      }
+
+    default:
+      break;
+  }
+  return state;
+};
 
 function playerReducer(state, action) {
   switch (action.type) {
@@ -69,6 +88,13 @@ const colorSettings = {
   },
 }
 
+const valueHelperSettings = {
+  visible: false,
+  rotation: "",
+  initialValue: 0,
+  finalValue: 4
+}
+
 export default function FourPlayer() {
 
   const [playerOne, dispatchOne] = useReducer(playerReducer, defaultSettings);
@@ -76,67 +102,15 @@ export default function FourPlayer() {
   const [playerThree, dispatchThree] = useReducer(playerReducer, defaultSettings);
   const [playerFour, dispatchFour] = useReducer(playerReducer, defaultSettings);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [valueHelp, dispatchValueHelper] = useReducer(valueHelpReducer, valueHelperSettings);
 
   return (
     <View
       style={{ height: '100%' }}>
 
-      <Modal
-        animationType="slide" // maybe fade?
-        transparent={true} // !fullscreen 
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-        }}
-      >
-        <View style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: 22,
-          transform: [{ rotate: "90deg" }]
-        }}>
-          <View style={{
-            margin: 20,
-            backgroundColor: "white",
-            borderRadius: 20,
-            padding: 35,
-            alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5
-          }}>
-            <Text style={{
-              marginBottom: 15,
-              textAlign: "center"
-            }}>Hello World!</Text>
-
-            <TouchableHighlight
-              style={{
-                borderRadius: 20,
-                padding: 10,
-                elevation: 2,
-                backgroundColor: "#2196F3"
-              }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
-              <Text style={{
-                color: "white",
-                fontWeight: "bold",
-                textAlign: "center"
-              }}>Hide Modal</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
-      </Modal>
+      <ValueHelper
+        settings={valueHelp}
+        onPressClose={() => dispatchValueHelper({ type: 'close', value: 10 })} />
 
       <View
         style={styles.screen}>
@@ -157,7 +131,7 @@ export default function FourPlayer() {
                 colorOpponentThree={colorSettings.playerThree.backgroundColor}
                 onPressPlusDamageOpponent={(opponent) => dispatchOne({ type: 'plusDamageOpponent', value: opponent })}
                 onPressMinusDamageOpponent={(opponent) => dispatchOne({ type: 'minusDamageOpponent', value: opponent })}
-                onLongPressDamageOpponent={() => setModalVisible(true)}
+                onLongPressDamageOpponent={() => dispatchValueHelper({ type: 'open', value: playerOne })}
               />
             </View>
           </View>
