@@ -11,7 +11,9 @@ function valueHelpReducer(state, action) {
     case 'open':
       return {
         ...state,
-        visible: true
+        visible: true,
+        initialValue: action.value,
+        finalValue: action.value,
       }
     case 'close':
       return {
@@ -131,7 +133,7 @@ export default function FourPlayer() {
                 colorOpponentThree={colorSettings.playerThree.backgroundColor}
                 onPressPlusDamageOpponent={(opponent) => dispatchOne({ type: 'plusDamageOpponent', value: opponent })}
                 onPressMinusDamageOpponent={(opponent) => dispatchOne({ type: 'minusDamageOpponent', value: opponent })}
-                onLongPressDamageOpponent={() => dispatchValueHelper({ type: 'open', value: playerOne })}
+                onLongPressDamageOpponent={(currentValue) => dispatchValueHelper({ type: 'open', value: currentValue })}
               />
             </View>
           </View>

@@ -20,7 +20,7 @@ export default function ValueHelper(props) {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 22,
-                // transform: props.settings.rotation
+                // transform: [{ rotate: "90deg" }],
             }}>
                 <View style={{
                     margin: 20,
@@ -40,7 +40,11 @@ export default function ValueHelper(props) {
                     <Text style={{
                         marginBottom: 15,
                         textAlign: "center"
-                    }}>Hello World!</Text>
+                    }}>{props.settings.initialValue}</Text>
+                    <Text style={{
+                        marginBottom: 15,
+                        textAlign: "center"
+                    }}>{props.settings.finalValue}</Text>
 
                     <TouchableHighlight
                         style={{

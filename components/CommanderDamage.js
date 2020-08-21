@@ -18,13 +18,14 @@ export default function CommanderDamage(props) {
         </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentOne")}
-          onLongPress={() => props.onLongPressDamageOpponent()}
+          onLongPress={() => props.onLongPressDamageOpponent(props.player.damageOpponentOne)}
           style={{
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: props.colorOpponentOne,
             borderRadius: 10,
-            padding: 10
+            padding: 10,
+            margin: 10,
           }}>
           <Text style={{ color: 'white', fontSize: 20 }}> {props.player.damageOpponentOne} </Text>
         </TouchableOpacity>
@@ -41,7 +42,7 @@ export default function CommanderDamage(props) {
 
       {/* opponent two */}
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => props.onPressMinusDamageOpponent("damageOpponentTwo")}
           style={{
             justifyContent: 'center',
@@ -49,18 +50,20 @@ export default function CommanderDamage(props) {
             padding: 10
           }}>
           <Text style={{ color: 'white'}}> - </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentTwo")}
+          onLongPress={() => props.onLongPressDamageOpponent(props.player.damageOpponentTwo)}
           style={{
             alignItems: 'center',
             backgroundColor: props.colorOpponentTwo,
             borderRadius: 10,
-            padding: 10
+            padding: 10,
+            margin: 10,
           }}>
           <Text style={{ color: 'white', fontSize: 20 }}> {props.player.damageOpponentTwo} </Text>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentTwo")}
           style={{
             justifyContent: 'center',
@@ -68,7 +71,7 @@ export default function CommanderDamage(props) {
             padding: 10
           }}>
           <Text style={{ color: 'white' }}> + </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       {/* opponent three */}
@@ -84,11 +87,13 @@ export default function CommanderDamage(props) {
         </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent("damageOpponentThree")}
+          onLongPress={() => props.onLongPressDamageOpponent(props.player.damageOpponentThree)}
           style={{
             alignItems: 'center',
             backgroundColor: props.colorOpponentThree,
             borderRadius: 10,
-            padding: 10
+            padding: 10,
+            margin: 10,
           }}>
           <Text style={{ color: 'white', fontSize: 20 }}> {props.player.damageOpponentThree} </Text>
         </TouchableOpacity>
