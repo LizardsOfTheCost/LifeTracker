@@ -20,6 +20,12 @@ function valueHelpReducer(state, action) {
         ...state,
         visible: false
       }
+    case 'save':
+      return {
+        ...state,
+        visible: false,
+        finalValue: action.value
+      }
 
     default:
       break;
@@ -112,7 +118,8 @@ export default function FourPlayer() {
 
       <ValueHelper
         settings={valueHelp}
-        onPressClose={() => dispatchValueHelper({ type: 'close', value: 10 })} />
+        onPressSave={(savedValue) => dispatchValueHelper({ type: 'save', value: savedValue})} 
+        onPressClose={() => dispatchValueHelper({ type: 'close' })} />
 
       <View
         style={styles.screen}>

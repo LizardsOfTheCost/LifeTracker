@@ -1,10 +1,23 @@
 
-import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Modal } from 'react-native';
-
-
+import React, { useState, useReducer } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableHighlight, Modal } from 'react-native';
 
 export default function ValueHelper(props) {
+
+    function calculationReducer(state, action) {
+        switch (action.type) {
+            case 'manual':
+                return {
+                    ...state,
+                    finalValue: action.value,
+                }
+
+            default:
+                return state;
+        }
+    };
+
+    const [values, dispatchValues] = useReducer(calculationReducer, props.settings);
 
     return (
         <Modal
@@ -41,10 +54,26 @@ export default function ValueHelper(props) {
                         marginBottom: 15,
                         textAlign: "center"
                     }}>{props.settings.initialValue}</Text>
+
+                    <TextInput
+                        style={{
+                            height: 40,
+                            borderColor: 'gray',
+                            borderWidth: 1,
+                            marginBottom: 15,
+                            textAlign: "center"
+                        }}
+                        // autoFocus={true}
+                        keyboardType="number-pad"
+                        onChangeText={text => dispatchValues({ type: 'manual', value: text })}
+                        value={(values.finalValue).toString()}
+                    />
+
+{/* 
                     <Text style={{
                         marginBottom: 15,
                         textAlign: "center"
-                    }}>{props.settings.finalValue}</Text>
+                    }}>{props.settings.finalValue}</Text> */}
 
                     <TouchableHighlight
                         style={{
@@ -53,13 +82,28 @@ export default function ValueHelper(props) {
                             elevation: 2,
                             backgroundColor: "#2196F3"
                         }}
-                        onPress={() => props.onPressClose() }
+                        onPress={() => props.onPressSave(props.settings.finalValue)}
                     >
                         <Text style={{
                             color: "white",
                             fontWeight: "bold",
                             textAlign: "center"
-                        }}>Hide Modal</Text>
+                        }}>Save</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={{
+                            borderRadius: 20,
+                            padding: 10,
+                            elevation: 2,
+                            backgroundColor: "#2196F3"
+                        }}
+                        onPress={() => props.onPressClose()}
+                    >
+                        <Text style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            textAlign: "center"
+                        }}>Cancel</Text>
                     </TouchableHighlight>
                 </View>
             </View>
