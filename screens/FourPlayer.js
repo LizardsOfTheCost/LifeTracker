@@ -12,19 +12,30 @@ function valueHelpReducer(state, action) {
       return {
         ...state,
         visible: true,
-        initialValue: action.value,
-        finalValue: action.value,
+        initialValue: action.value.currentValue,
+        finalValue: action.value.currentValue,
+        attribute: action.value.attribute,
+        playerId: action.value.playerId,
       }
+
+    case 'change':
+      return {
+        ...state,
+        finalValue: action.value.currentValue,
+      }
+
     case 'close':
       return {
         ...state,
         visible: false
       }
+
     case 'save':
+      state.callback(state);
+
       return {
         ...state,
         visible: false,
-        finalValue: action.value
       }
 
     default:
@@ -35,30 +46,70 @@ function valueHelpReducer(state, action) {
 
 function playerReducer(state, action) {
   switch (action.type) {
+    case 'setValue':
+      state.forEach(item => {
+        if (item.id === action.value.playerId) {
+          if (action.value.attribute === "lifeTotal") {
+            item[action.value.attribute] = action.value.finalValue;
+          } else {
+            const newValue = (action.value.finalValue < 0) ? 0 : action.value.finalValue;
+            const valDiff = parseInt(newValue) - item[action.value.attribute];
+
+            item[action.value.attribute] = newValue;
+            item.lifeTotal = item.lifeTotal + (valDiff * -1)
+          }
+        }
+      })
+
+      return [...state];
+
     case 'plusLifeTotal':
-      return {
-        ...state,
-        lifeTotal: state.lifeTotal + 1,
-      }
+      state.forEach(item => {
+        if (item.id === action.value.playerId) {
+          item.lifeTotal = item.lifeTotal + 1;
+        }
+      })
+
+      return [...state];
+
     case 'minusLifeTotal':
-      return {
-        ...state,
-        lifeTotal: state.lifeTotal - 1,
-      }
+      state.forEach(item => {
+        if (item.id === action.value.playerId) {
+          item.lifeTotal = item.lifeTotal - 1;
+        }
+      })
+
+      return [...state];
+
+    case 'setDamageOpponent':
+      state.forEach(item => {
+        if (item.id === action.value.playerId) {
+          // item[action.value.path] = item[action.value.opponent];
+        }
+      })
+
+      return [...state];
+
     case 'plusDamageOpponent':
-      return {
-        ...state,
-        lifeTotal: state.lifeTotal - 1,
-        [action.value]: state[action.value] + 1,
-      }
+      state.forEach(item => {
+        if (item.id === action.value.playerId) {
+          item.lifeTotal = item.lifeTotal - 1;
+          item[action.value.opponent] = item[action.value.opponent] + 1;
+        }
+      })
+
+      return [...state];
+
     case 'minusDamageOpponent':
-      return {
-        ...state,
-        ...(state[action.value] > 0 && {
-          lifeTotal: state.lifeTotal + 1,
-          [action.value]: state[action.value] - 1,
-        }),
-      }
+      state.forEach(item => {
+        if (item.id === action.value.playerId) {
+          item.lifeTotal = item.lifeTotal + 1;
+          item[action.value.opponent] = item[action.value.opponent] - 1;
+        }
+      })
+
+      return [...state];
+
     default:
       break;
   }
@@ -70,55 +121,79 @@ let { width, height } = Dimensions.get('window')
 let xPosition = width / 2;
 let yPosition = height / 2;
 
-// Settings
-const defaultSettings = {
-  lifeTotal: 40,
-  commanderTax: 0,
-  poison: 0,
-  poisonVisible: false,
-  damageOpponentOne: 0,
-  damageOpponentTwo: 0,
-  damageOpponentThree: 0,
-};
-
-const colorSettings = {
-  playerOne: {
+const playerSettings = [
+  {
+    id: "one",
+    lifeTotal: 40,
+    commanderTax: 0,
+    damageOpponentOne: 0,
+    damageOpponentTwo: 0,
+    damageOpponentThree: 0,
     backgroundColor: "darkred"
   },
-  playerTwo: {
+  {
+    id: "two",
+    lifeTotal: 40,
+    commanderTax: 0,
+    damageOpponentOne: 0,
+    damageOpponentTwo: 0,
+    damageOpponentThree: 0,
     backgroundColor: "darkblue"
   },
-  playerThree: {
+  {
+    id: "three",
+    lifeTotal: 40,
+    commanderTax: 0,
+    damageOpponentOne: 0,
+    damageOpponentTwo: 0,
+    damageOpponentThree: 0,
     backgroundColor: "darkgreen"
   },
-  playerFour: {
+  {
+    id: "four",
+    lifeTotal: 40,
+    commanderTax: 0,
+    damageOpponentOne: 0,
+    damageOpponentTwo: 0,
+    damageOpponentThree: 0,
     backgroundColor: "black"
   },
-}
+];
 
-const valueHelperSettings = {
-  visible: false,
-  rotation: "",
-  initialValue: 0,
-  finalValue: 4
-}
+
 
 export default function FourPlayer() {
 
-  const [playerOne, dispatchOne] = useReducer(playerReducer, defaultSettings);
-  const [playerTwo, dispatchTwo] = useReducer(playerReducer, defaultSettings);
-  const [playerThree, dispatchThree] = useReducer(playerReducer, defaultSettings);
-  const [playerFour, dispatchFour] = useReducer(playerReducer, defaultSettings);
+  const [players, dispatchPlayers] = useReducer(playerReducer, playerSettings)
+
+  const valueHelperSettings = {
+    visible: false,
+    rotation: "",
+    initialValue: 67,
+    finalValue: 89,
+    attribute: "",
+    playerId: "",
+    callback: (vals) => dispatchPlayers({ type: 'setValue', value: vals }),
+  }
+
 
   const [valueHelp, dispatchValueHelper] = useReducer(valueHelpReducer, valueHelperSettings);
 
   return (
+
     <View
       style={{ height: '100%' }}>
 
       <ValueHelper
         settings={valueHelp}
-        onPressSave={(savedValue) => dispatchValueHelper({ type: 'save', value: savedValue})} 
+
+        onChangeValue={(currentValue) => dispatchValueHelper({
+          type: 'change',
+          value: {
+            currentValue: currentValue,
+          }
+        })}
+        onPressSave={() => dispatchValueHelper({ type: 'save' })}
         onPressClose={() => dispatchValueHelper({ type: 'close' })} />
 
       <View
@@ -127,20 +202,32 @@ export default function FourPlayer() {
         {/* Player 1 - Top Left */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: colorSettings.playerOne.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: players[0].backgroundColor }]}>
           <View style={styles.playerAreaHalf}>
             <View
               style={{
                 transform: [{ rotate: "90deg" }]
               }}>
               <CommanderDamage
-                player={playerOne}
-                colorOpponentOne={colorSettings.playerTwo.backgroundColor}
-                colorOpponentTwo={colorSettings.playerFour.backgroundColor}
-                colorOpponentThree={colorSettings.playerThree.backgroundColor}
-                onPressPlusDamageOpponent={(opponent) => dispatchOne({ type: 'plusDamageOpponent', value: opponent })}
-                onPressMinusDamageOpponent={(opponent) => dispatchOne({ type: 'minusDamageOpponent', value: opponent })}
-                onLongPressDamageOpponent={(currentValue) => dispatchValueHelper({ type: 'open', value: currentValue })}
+                player={players[0]}
+                colorOpponentOne={players[1].backgroundColor}
+                colorOpponentTwo={players[3].backgroundColor}
+                colorOpponentThree={players[2].backgroundColor}
+                onPressPlusDamageOpponent={(playerId, opponent) => dispatchPlayers({
+                  type: 'plusDamageOpponent',
+                  value: {
+                    playerId: playerId,
+                    opponent: opponent
+                  }
+                })}
+                onLongPressDamageOpponent={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
+                  }
+                })}
               />
             </View>
           </View>
@@ -149,12 +236,21 @@ export default function FourPlayer() {
               style={{
                 transform: [{ rotate: "90deg" }]
               }}>
+              {/* onPressLifeTotal={() => toggleModalVisible()} */}
               <LifeTotal
-                lifeTotal={playerOne.lifeTotal}
-                // onPressLifeTotal={() => toggleModalVisible()}
-                onPressPlus={() => dispatchOne({ type: 'plusLifeTotal' })}
-                onPressMinus={() => dispatchOne({ type: 'minusLifeTotal' })}
-
+                player={players[0]}
+                onPressPlus={(playerId) => dispatchPlayers({
+                  type: 'plusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
+                onPressMinus={(playerId) => dispatchPlayers({
+                  type: 'minusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
               />
             </View>
           </View>
@@ -163,16 +259,26 @@ export default function FourPlayer() {
         {/* Top Right */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: colorSettings.playerTwo.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: players[1].backgroundColor }]}>
           <View style={[styles.playerAreaHalf, { alignItems: 'flex-start' }]}>
             <View
               style={{
                 transform: [{ rotate: "-90deg" }]
               }}>
               <LifeTotal
-                lifeTotal={playerTwo.lifeTotal}
-                onPressPlus={() => dispatchTwo({ type: 'plusLifeTotal' })}
-                onPressMinus={() => dispatchTwo({ type: 'minusLifeTotal' })}
+                player={players[1]}
+                onPressPlus={(playerId) => dispatchPlayers({
+                  type: 'plusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
+                onPressMinus={(playerId) => dispatchPlayers({
+                  type: 'minusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
               />
             </View>
           </View>
@@ -182,12 +288,17 @@ export default function FourPlayer() {
                 transform: [{ rotate: "-90deg" }]
               }}>
               <CommanderDamage
-                player={playerTwo}
-                colorOpponentOne={colorSettings.playerFour.backgroundColor}
-                colorOpponentTwo={colorSettings.playerThree.backgroundColor}
-                colorOpponentThree={colorSettings.playerOne.backgroundColor}
-                onPressPlusDamageOpponent={(opponent) => dispatchTwo({ type: 'plusDamageOpponent', value: opponent })}
-                onPressMinusDamageOpponent={(opponent) => dispatchTwo({ type: 'minusDamageOpponent', value: opponent })}
+                player={players[1]}
+                colorOpponentOne={players[3].backgroundColor}
+                colorOpponentTwo={players[2].backgroundColor}
+                colorOpponentThree={players[0].backgroundColor}
+                onPressPlusDamageOpponent={(playerId, opponent) => dispatchPlayers({
+                  type: 'plusDamageOpponent',
+                  value: {
+                    playerId: playerId,
+                    opponent: opponent
+                  }
+                })}
               />
             </View>
           </View>
@@ -196,19 +307,24 @@ export default function FourPlayer() {
         {/* Bottom Left */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: colorSettings.playerThree.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: players[2].backgroundColor }]}>
           <View style={styles.playerAreaHalf}>
             <View
               style={{
                 transform: [{ rotate: "90deg" }]
               }}>
               <CommanderDamage
-                player={playerThree}
-                colorOpponentOne={colorSettings.playerOne.backgroundColor}
-                colorOpponentTwo={colorSettings.playerTwo.backgroundColor}
-                colorOpponentThree={colorSettings.playerFour.backgroundColor}
-                onPressPlusDamageOpponent={(opponent) => dispatchThree({ type: 'plusDamageOpponent', value: opponent })}
-                onPressMinusDamageOpponent={(opponent) => dispatchThree({ type: 'minusDamageOpponent', value: opponent })}
+                player={players[2]}
+                colorOpponentOne={players[0].backgroundColor}
+                colorOpponentTwo={players[1].backgroundColor}
+                colorOpponentThree={players[3].backgroundColor}
+                onPressPlusDamageOpponent={(playerId, opponent) => dispatchPlayers({
+                  type: 'plusDamageOpponent',
+                  value: {
+                    playerId: playerId,
+                    opponent: opponent
+                  }
+                })}
               />
             </View>
           </View>
@@ -218,9 +334,19 @@ export default function FourPlayer() {
                 transform: [{ rotate: "90deg" }]
               }}>
               <LifeTotal
-                lifeTotal={playerThree.lifeTotal}
-                onPressPlus={() => dispatchThree({ type: 'plusLifeTotal' })}
-                onPressMinus={() => dispatchThree({ type: 'minusLifeTotal' })}
+                player={players[2]}
+                onPressPlus={(playerId) => dispatchPlayers({
+                  type: 'plusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
+                onPressMinus={(playerId) => dispatchPlayers({
+                  type: 'minusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
               />
             </View>
           </View>
@@ -229,16 +355,26 @@ export default function FourPlayer() {
         {/* Bottom Right */}
 
         <View
-          style={[styles.playerArea, { backgroundColor: colorSettings.playerFour.backgroundColor }]}>
+          style={[styles.playerArea, { backgroundColor: players[3].backgroundColor }]}>
           <View style={[styles.playerAreaHalf, { alignItems: 'flex-start' }]}>
             <View
               style={{
                 transform: [{ rotate: "-90deg" }]
               }}>
               <LifeTotal
-                lifeTotal={playerFour.lifeTotal}
-                onPressPlus={() => dispatchFour({ type: 'plusLifeTotal' })}
-                onPressMinus={() => dispatchFour({ type: 'minusLifeTotal' })}
+                player={players[3]}
+                onPressPlus={(playerId) => dispatchPlayers({
+                  type: 'plusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
+                onPressMinus={(playerId) => dispatchPlayers({
+                  type: 'minusLifeTotal',
+                  value: {
+                    playerId: playerId,
+                  }
+                })}
               />
             </View>
           </View>
@@ -248,12 +384,17 @@ export default function FourPlayer() {
                 transform: [{ rotate: "-90deg" }]
               }}>
               <CommanderDamage
-                player={playerFour}
-                colorOpponentOne={colorSettings.playerThree.backgroundColor}
-                colorOpponentTwo={colorSettings.playerOne.backgroundColor}
-                colorOpponentThree={colorSettings.playerTwo.backgroundColor}
-                onPressPlusDamageOpponent={(opponent) => dispatchFour({ type: 'plusDamageOpponent', value: opponent })}
-                onPressMinusDamageOpponent={(opponent) => dispatchFour({ type: 'minusDamageOpponent', value: opponent })}
+                player={players[3]}
+                colorOpponentOne={players[2].backgroundColor}
+                colorOpponentTwo={players[0].backgroundColor}
+                colorOpponentThree={players[1].backgroundColor}
+                onPressPlusDamageOpponent={(playerId, opponent) => dispatchPlayers({
+                  type: 'plusDamageOpponent',
+                  value: {
+                    playerId: playerId,
+                    opponent: opponent
+                  }
+                })}
               />
             </View>
           </View>

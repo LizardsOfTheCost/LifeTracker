@@ -1,24 +1,8 @@
 
-import React, { useState, useReducer } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableHighlight, Modal } from 'react-native';
 
 export default function ValueHelper(props) {
-
-    function calculationReducer(state, action) {
-        switch (action.type) {
-            case 'manual':
-                return {
-                    ...state,
-                    finalValue: action.value,
-                }
-
-            default:
-                return state;
-        }
-    };
-
-    const [values, dispatchValues] = useReducer(calculationReducer, props.settings);
-
     return (
         <Modal
             animationType="slide" // maybe fade?
@@ -33,7 +17,7 @@ export default function ValueHelper(props) {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 22,
-                // transform: [{ rotate: "90deg" }],
+                transform: [{ rotate: "90deg" }],
             }}>
                 <View style={{
                     margin: 20,
@@ -65,15 +49,32 @@ export default function ValueHelper(props) {
                         }}
                         // autoFocus={true}
                         keyboardType="number-pad"
-                        onChangeText={text => dispatchValues({ type: 'manual', value: text })}
-                        value={(values.finalValue).toString()}
+                        // onChangeText={text => dispatchValues({ type: 'manual', value: text })}
+                        onChangeText={value => props.onChangeValue(value)}
+                        value={(props.settings.finalValue).toString()}
                     />
 
-{/* 
+                    {/* 
                     <Text style={{
                         marginBottom: 15,
                         textAlign: "center"
                     }}>{props.settings.finalValue}</Text> */}
+
+                    <TouchableHighlight
+                        style={{
+                            borderRadius: 20,
+                            padding: 10,
+                            elevation: 2,
+                            backgroundColor: "#2196F3"
+                        }}
+                        onPress={() => props.onChangeValue(props.settings.finalValue + 5)}
+                    >
+                        <Text style={{
+                            color: "white",
+                            fontWeight: "bold",
+                            textAlign: "center"
+                        }}>+5</Text>
+                    </TouchableHighlight>
 
                     <TouchableHighlight
                         style={{

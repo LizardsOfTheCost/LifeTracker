@@ -7,7 +7,7 @@ export default function LifeTotal(props) {
     <View
       style={{ flexDirection: 'row' }}>
       <TouchableOpacity
-        onPress={props.onPressMinus}
+        onPress={() => props.onPressMinus(props.player.id)}
         style={{
           justifyContent: "center",
           paddingHorizontal: 15,
@@ -33,12 +33,12 @@ export default function LifeTotal(props) {
           color: 'white',
           fontSize: 48,
           paddingBottom: 5
-        }}>{props.lifeTotal}</Text>
+        }}>{props.player.lifeTotal}</Text>
       </TouchableOpacity>
 
 
       <TouchableOpacity
-        onPress={props.onPressPlus}
+        onPress={() => props.onPressPlus(props.player.id)} 
         style={{
           justifyContent: "center",
           paddingHorizontal: 15,
