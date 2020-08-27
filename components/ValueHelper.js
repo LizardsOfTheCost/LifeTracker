@@ -17,7 +17,7 @@ export default function ValueHelper(props) {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 22,
-                transform: [{ rotate: "90deg" }],
+                // transform: [{ rotate: "90deg" }],
             }}>
                 <View style={{
                     margin: 20,
@@ -67,7 +67,7 @@ export default function ValueHelper(props) {
                             elevation: 2,
                             backgroundColor: "#2196F3"
                         }}
-                        onPress={() => props.onChangeValue(props.settings.finalValue + 5)}
+                        onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) + 5)}
                     >
                         <Text style={{
                             color: "white",

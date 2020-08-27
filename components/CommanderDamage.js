@@ -30,7 +30,11 @@ export default function CommanderDamage(props) {
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent(props.player.id, "damageOpponentTwo")}
-          onLongPress={() => props.onLongPressDamageOpponent(props.player.damageOpponentTwo)}
+          onLongPress={() => props.onLongPressDamageOpponent(
+            props.player.id,
+            props.player.damageOpponentOne,
+            "damageOpponentTwo",
+          )}
           style={{
             alignItems: 'center',
             backgroundColor: props.colorOpponentTwo,
@@ -46,7 +50,11 @@ export default function CommanderDamage(props) {
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity
           onPress={() => props.onPressPlusDamageOpponent(props.player.id, "damageOpponentThree")}
-          onLongPress={() => props.onLongPressDamageOpponent(props.player.damageOpponentThree)}
+          onLongPress={() => props.onLongPressDamageOpponent(
+            props.player.id,
+            props.player.damageOpponentOne,
+            "damageOpponentThree",
+          )}
           style={{
             alignItems: 'center',
             backgroundColor: props.colorOpponentThree,

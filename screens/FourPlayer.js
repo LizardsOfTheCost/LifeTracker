@@ -66,7 +66,7 @@ function playerReducer(state, action) {
     case 'plusLifeTotal':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = item.lifeTotal + 1;
+          item.lifeTotal = parseInt(item.lifeTotal) + 1;
         }
       })
 
@@ -75,7 +75,7 @@ function playerReducer(state, action) {
     case 'minusLifeTotal':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = item.lifeTotal - 1;
+          item.lifeTotal = parseInt(item.lifeTotal) - 1;
         }
       })
 
@@ -93,8 +93,8 @@ function playerReducer(state, action) {
     case 'plusDamageOpponent':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = item.lifeTotal - 1;
-          item[action.value.opponent] = item[action.value.opponent] + 1;
+          item.lifeTotal = parseInt(item.lifeTotal) - 1;
+          item[action.value.opponent] = parseInt(item[action.value.opponent]) + 1;
         }
       })
 
@@ -103,8 +103,8 @@ function playerReducer(state, action) {
     case 'minusDamageOpponent':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = item.lifeTotal + 1;
-          item[action.value.opponent] = item[action.value.opponent] - 1;
+          item.lifeTotal = parseInt(item.lifeTotal) + 1;
+          item[action.value.opponent] = parseInt(item[action.value.opponent]) - 1;
         }
       })
 
