@@ -21,6 +21,11 @@ export default function LifeTotal(props) {
 
       <TouchableOpacity
         onPress={props.onPressLifeTotal}
+        onLongPress={() => props.onLongPress(
+          props.player.id,
+          props.player.lifeTotal,
+          "lifeTotal",
+        )}
         style={{
           borderRadius: 10,
           borderWidth: 1,
@@ -38,7 +43,7 @@ export default function LifeTotal(props) {
 
 
       <TouchableOpacity
-        onPress={() => props.onPressPlus(props.player.id)} 
+        onPress={() => props.onPressPlus(props.player.id)}
         style={{
           justifyContent: "center",
           paddingHorizontal: 15,

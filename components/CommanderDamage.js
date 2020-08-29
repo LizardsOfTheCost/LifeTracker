@@ -32,7 +32,7 @@ export default function CommanderDamage(props) {
           onPress={() => props.onPressPlusDamageOpponent(props.player.id, "damageOpponentTwo")}
           onLongPress={() => props.onLongPressDamageOpponent(
             props.player.id,
-            props.player.damageOpponentOne,
+            props.player.damageOpponentTwo,
             "damageOpponentTwo",
           )}
           style={{
@@ -52,7 +52,7 @@ export default function CommanderDamage(props) {
           onPress={() => props.onPressPlusDamageOpponent(props.player.id, "damageOpponentThree")}
           onLongPress={() => props.onLongPressDamageOpponent(
             props.player.id,
-            props.player.damageOpponentOne,
+            props.player.damageOpponentThree,
             "damageOpponentThree",
           )}
           style={{

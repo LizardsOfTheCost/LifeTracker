@@ -8,23 +8,22 @@ export default function ValueHelper(props) {
             animationType="slide" // maybe fade?
             transparent={true} // !fullscreen 
             visible={props.settings.visible}
-            onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-            }}
+        // onRequestClose={() => {
+        //     Alert.alert("Modal has been closed.");
+        // }}
         >
             <View style={{
                 flex: 1,
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: 22,
                 // transform: [{ rotate: "90deg" }],
             }}>
                 <View style={{
                     margin: 20,
-                    backgroundColor: "white",
+                    backgroundColor: "black",
                     borderRadius: 20,
-                    padding: 35,
-                    alignItems: "center",
+                    padding: 15,
+                    // alignItems: "center",
                     shadowColor: "#000",
                     shadowOffset: {
                         width: 0,
@@ -34,78 +33,178 @@ export default function ValueHelper(props) {
                     shadowRadius: 3.84,
                     elevation: 5
                 }}>
-                    <Text style={{
-                        marginBottom: 15,
-                        textAlign: "center"
-                    }}>{props.settings.initialValue}</Text>
 
-                    <TextInput
-                        style={{
-                            height: 40,
-                            borderColor: 'gray',
-                            borderWidth: 1,
-                            marginBottom: 15,
-                            textAlign: "center"
-                        }}
-                        // autoFocus={true}
-                        keyboardType="number-pad"
-                        // onChangeText={text => dispatchValues({ type: 'manual', value: text })}
-                        onChangeText={value => props.onChangeValue(value)}
-                        value={(props.settings.finalValue).toString()}
-                    />
-
-                    {/* 
-                    <Text style={{
-                        marginBottom: 15,
-                        textAlign: "center"
-                    }}>{props.settings.finalValue}</Text> */}
-
-                    <TouchableHighlight
-                        style={{
-                            borderRadius: 20,
-                            padding: 10,
-                            elevation: 2,
-                            backgroundColor: "#2196F3"
-                        }}
-                        onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) + 5)}
-                    >
+                    <View style={{ flexDirection: "row" }}>
                         <Text style={{
+
+                            width: 65,
+                            padding: 10,
                             color: "white",
                             fontWeight: "bold",
+                            textAlignVertical: "center",
                             textAlign: "center"
-                        }}>+5</Text>
-                    </TouchableHighlight>
 
-                    <TouchableHighlight
-                        style={{
-                            borderRadius: 20,
-                            padding: 10,
-                            elevation: 2,
-                            backgroundColor: "#2196F3"
-                        }}
-                        onPress={() => props.onPressSave(props.settings.finalValue)}
-                    >
-                        <Text style={{
-                            color: "white",
-                            fontWeight: "bold",
-                            textAlign: "center"
-                        }}>Save</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        style={{
-                            borderRadius: 20,
-                            padding: 10,
-                            elevation: 2,
-                            backgroundColor: "#2196F3"
-                        }}
-                        onPress={() => props.onPressClose()}
-                    >
-                        <Text style={{
-                            color: "white",
-                            fontWeight: "bold",
-                            textAlign: "center"
-                        }}>Cancel</Text>
-                    </TouchableHighlight>
+                        }}>{props.settings.initialValue}</Text>
+
+                        <TextInput
+                            style={{
+                                backgroundColor: "gray",
+                                borderRadius: 5,
+                                width: 65,
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}
+                            keyboardType="number-pad"
+                            onChangeText={value => props.onChangeValue(parseInt(value))}
+                            value={(props.settings.finalValue).toString()}
+                        />
+                    </View>
+
+                    <View style={{ flexDirection: "row" }}>
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "#2196F3"
+                            }}
+                            onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) - 1)}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>- 1</Text>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "#2196F3"
+                            }}
+                            onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) + 1)}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>+ 1</Text>
+                        </TouchableHighlight>
+                    </View>
+
+                    <View style={{ flexDirection: "row" }}>
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "#2196F3"
+                            }}
+                            onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) - 5)}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>- 5</Text>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "#2196F3"
+                            }}
+                            onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) + 5)}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>+ 5</Text>
+                        </TouchableHighlight>
+                    </View>
+
+                    {/* <View style={{ flexDirection: "row" }}>
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "#2196F3"
+                            }}
+                            onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) - 10)}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>- 10</Text>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "#2196F3"
+                            }}
+                            onPress={() => props.onChangeValue(parseInt(props.settings.finalValue) + 10)}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>+ 10</Text>
+                        </TouchableHighlight>
+                    </View> */}
+
+                    <View style={{ flexDirection: "row" }}>
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "darkred"
+                            }}
+                            onPress={() => props.onPressClose()}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>Cancel</Text>
+                        </TouchableHighlight>
+
+                        <TouchableHighlight
+                            style={{
+                                borderRadius: 5,
+                                width: 65,
+                                padding: 10,
+                                elevation: 2,
+                                backgroundColor: "darkgreen"
+                            }}
+                            onPress={() => props.onPressSave(props.settings.finalValue)}
+                        >
+                            <Text style={{
+                                color: "white",
+                                fontWeight: "bold",
+                                textAlign: "center"
+                            }}>Save</Text>
+                        </TouchableHighlight>
+                    </View>
+
                 </View>
             </View>
         </Modal>

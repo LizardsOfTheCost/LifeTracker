@@ -53,7 +53,7 @@ function playerReducer(state, action) {
             item[action.value.attribute] = action.value.finalValue;
           } else {
             const newValue = (action.value.finalValue < 0) ? 0 : action.value.finalValue;
-            const valDiff = parseInt(newValue) - item[action.value.attribute];
+            const valDiff = newValue - item[action.value.attribute];
 
             item[action.value.attribute] = newValue;
             item.lifeTotal = item.lifeTotal + (valDiff * -1)
@@ -66,7 +66,7 @@ function playerReducer(state, action) {
     case 'plusLifeTotal':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = parseInt(item.lifeTotal) + 1;
+          item.lifeTotal = item.lifeTotal + 1;
         }
       })
 
@@ -75,7 +75,7 @@ function playerReducer(state, action) {
     case 'minusLifeTotal':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = parseInt(item.lifeTotal) - 1;
+          item.lifeTotal = item.lifeTotal - 1;
         }
       })
 
@@ -93,8 +93,8 @@ function playerReducer(state, action) {
     case 'plusDamageOpponent':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = parseInt(item.lifeTotal) - 1;
-          item[action.value.opponent] = parseInt(item[action.value.opponent]) + 1;
+          item.lifeTotal = item.lifeTotal - 1;
+          item[action.value.opponent] = item[action.value.opponent] + 1;
         }
       })
 
@@ -103,8 +103,8 @@ function playerReducer(state, action) {
     case 'minusDamageOpponent':
       state.forEach(item => {
         if (item.id === action.value.playerId) {
-          item.lifeTotal = parseInt(item.lifeTotal) + 1;
-          item[action.value.opponent] = parseInt(item[action.value.opponent]) - 1;
+          item.lifeTotal = item.lifeTotal + 1;
+          item[action.value.opponent] = item[action.value.opponent] - 1;
         }
       })
 
@@ -251,6 +251,14 @@ export default function FourPlayer() {
                     playerId: playerId,
                   }
                 })}
+                onLongPress={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
+                  }
+                })}
               />
             </View>
           </View>
@@ -279,6 +287,14 @@ export default function FourPlayer() {
                     playerId: playerId,
                   }
                 })}
+                onLongPress={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
+                  }
+                })}
               />
             </View>
           </View>
@@ -297,6 +313,14 @@ export default function FourPlayer() {
                   value: {
                     playerId: playerId,
                     opponent: opponent
+                  }
+                })}
+                onLongPressDamageOpponent={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
                   }
                 })}
               />
@@ -325,6 +349,14 @@ export default function FourPlayer() {
                     opponent: opponent
                   }
                 })}
+                onLongPressDamageOpponent={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
+                  }
+                })}
               />
             </View>
           </View>
@@ -345,6 +377,14 @@ export default function FourPlayer() {
                   type: 'minusLifeTotal',
                   value: {
                     playerId: playerId,
+                  }
+                })}
+                onLongPress={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
                   }
                 })}
               />
@@ -375,6 +415,14 @@ export default function FourPlayer() {
                     playerId: playerId,
                   }
                 })}
+                onLongPress={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
+                  }
+                })}
               />
             </View>
           </View>
@@ -393,6 +441,14 @@ export default function FourPlayer() {
                   value: {
                     playerId: playerId,
                     opponent: opponent
+                  }
+                })}
+                onLongPressDamageOpponent={(playerId, currentValue, attribute) => dispatchValueHelper({
+                  type: 'open',
+                  value: {
+                    playerId: playerId,
+                    currentValue: currentValue,
+                    attribute: attribute,
                   }
                 })}
               />
