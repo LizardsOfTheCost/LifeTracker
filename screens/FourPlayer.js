@@ -1,5 +1,5 @@
 import React, { useState, useReducer } from 'react';
-import { Dimensions, StyleSheet, Text, View, TouchableHighlight, Button, Modal } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, View, TouchableHighlight, Button, Modal } from 'react-native';
 
 import ValueHelper from '../components/ValueHelper';
 import LifeTotal from '../components/LifeTotal';
@@ -183,6 +183,8 @@ export default function FourPlayer() {
 
     <View
       style={{ height: '100%' }}>
+
+      <Image source={{ uri: "https://i.pinimg.com/originals/2a/33/cd/2a33cd82dba42c71c6096370dbe60184.gif" }} style={{width: 50, height: 50}} />
 
       <ValueHelper
         settings={valueHelp}
